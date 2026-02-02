@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-[#050505] text-zinc-300 antialiased;
+    /* Font monospaced untuk kesan terminal teknis */
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Mencegah scroll body utama agar layout internal tetap solid */
+  }
+
+  /* Kustomisasi seleksi teks (Highlighting) */
+  ::selection {
+    @apply bg-red-600/30 text-red-100;
+  }
+}
+
+@layer components {
+  /* Efek Scanline (Garis berjalan di layar ala monitor lama) */
+  .cyber-scanline {
+    @apply pointer-events-none fixed inset-0 z-50;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%,
+      rgba(0, 0, 0, 0.25) 50%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.06),
+      rgba(0, 255, 0, 0.02),
+      rgba(0, 0, 255, 0.06)
+    );
+    background-size: 100% 4px, 3px 100%;
+  }
+
+  /* Efek Glow untuk teks penting */
+  .text-glow-red {
+    text-shadow: 0 0 10px rgba(220, 38, 38, 0.5), 0 0 20px rgba(220, 38, 38, 0.3);
+  }
+
+  /* Glassmorphism untuk panel terminal */
+  .terminal-glass {
+    @apply bg-black/60 backdrop-blur-md border border-red-900/20;
+  }
+}
+
+/* Custom Scrollbar - Minimalist & Cyberpunk */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-zinc-800 rounded-full transition-all;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-red-600 shadow-[0_0_10px_rgba(220,38,38,1)];
+}
+
+/* Animasi untuk loading atau data stream */
+@keyframes pulse-red {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
