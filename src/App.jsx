@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 // Ganti tanda kutip kosong di bawah dengan API Key dari Google AI Studio jika ingin AI-nya aktif
-const apiKey = ""; 
+const apiKey = "AIzaSyDINRKcVKNFIrxWUoyeSg9R03IYCHGR_DU"; 
 
 export default function App() {
   const [isLocked, setIsLocked] = useState(true);
