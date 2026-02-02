@@ -21,6 +21,9 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   
+  /** --- PENAMBAHAN GLITCH --- **/
+  const [isGlitching, setIsGlitching] = useState(false);
+
   const chatEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -34,9 +37,12 @@ export default function App() {
       setIsLocked(false);
       setShowDisclaimer(true);
       setError('');
+      setIsGlitching(false); // Matikan glitch jika login berhasil
     } else {
       setError('ACCESS DENIED: Kredensial Tidak Valid.');
       setPasskey('');
+      setIsGlitching(true); // Aktifkan glitch saat error
+      setTimeout(() => setIsGlitching(false), 2000); // Matikan setelah 2 detik
     }
   };
 
@@ -49,6 +55,7 @@ export default function App() {
     setInput('');
     setSelectedImage(null);
     setIsLoading(true);
+    setIsGlitching(true); // Aktifkan glitch saat loading
 
     try {
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
@@ -65,6 +72,7 @@ export default function App() {
       setMessages(prev => [...prev, { role: 'assistant', content: "CONNECTION_FAILURE: Link satelit terputus." }]);
     } finally {
       setIsLoading(false);
+      setIsGlitching(false); // Matikan glitch setelah selesai
     }
   };
 
@@ -85,7 +93,10 @@ export default function App() {
             <div className="w-full max-w-md bg-[#0a0a0a] border border-red-900/30 p-8 rounded-sm shadow-[0_0_50px_rgba(139,0,0,0.2)]">
               <div className="text-center mb-8">
                 <Skull className="w-16 h-16 text-red-600 mx-auto mb-4 animate-pulse" />
-                <h1 className="text-2xl font-black tracking-[0.2em] text-red-600 text-glow-red">MCS PRO ELITE</h1>
+                {/* Judul Glitch */}
+                <h1 className={`text-2xl font-black tracking-[0.2em] text-red-600 text-glow-red ${isGlitching ? 'glitch' : ''}`} data-text="MCS PRO ELITE">
+                  MCS PRO ELITE
+                </h1>
                 <p className="text-[10px] text-red-900 mt-2 tracking-[0.3em]">SECURE ACCESS ONLY</p>
               </div>
               
@@ -105,7 +116,8 @@ export default function App() {
                 </button>
                 {error && (
                   <motion.div initial={{ y: 10 }} animate={{ y: 0 }} className="flex items-center gap-2 justify-center text-red-600 text-[10px]">
-                    <AlertCircle className="w-3 h-3" /> {error}
+                    <AlertCircle className={`w-3 h-3 ${isGlitching ? 'glitch' : ''}`} data-text="!" /> 
+                    <span className={`${isGlitching ? 'glitch' : ''}`} data-text={error}>{error}</span>
                   </motion.div>
                 )}
               </form>
@@ -148,7 +160,7 @@ export default function App() {
                 </motion.div>
               ))}
               {isLoading && (
-                <div className="text-red-600 text-xs animate-pulse font-bold tracking-widest">
+                <div className={`text-red-600 text-xs animate-pulse font-bold tracking-widest ${isGlitching ? 'glitch' : ''}`} data-text="> DECIPHERING DATA STREAM...">
                   &gt; DECIPHERING DATA STREAM...
                 </div>
               )}
